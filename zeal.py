@@ -26,7 +26,9 @@ def list_installed_docsets(path):
                         meta = json.load(f)
                         kws = get_nested(meta, "extra", "keywords")
                         if not kws:
-                            kws = get_kw_from_plist(path, d)
+                            kws = get_kw_from_plist(path, d) or [
+                                meta["title"].replace(" ", "").lower()
+                            ]
                         docset = {"title": meta["title"], "keywords": kws}
                         if os.path.exists(icon_file):
                             docset["icon"] = icon_file
@@ -37,11 +39,11 @@ def list_installed_docsets(path):
 
 def get_kw_from_plist(path, d):
     plist_file = os.path.join(path, d, "Contents", "Info.plist")
-    print("getting info from " + plist_file)
     if os.path.exists(plist_file):
         with open(plist_file, 'rb') as f:
             plist = plistlib.load(f)
             return [plist["CFBundleIdentifier"]]
+    return None
 
 def query_docset(kw, query):
     subprocess.run(["zeal", "{}:{}".format(kw, query)])
