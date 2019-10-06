@@ -1,5 +1,6 @@
 import os
 import json
+import plistlib
 import subprocess
 from operator import itemgetter
 
@@ -23,9 +24,9 @@ def list_installed_docsets(path):
                 with open(meta_file) as f:
                     try:
                         meta = json.load(f)
-                        kws = get_nested(meta, "extra", "keywords") or [
-                            meta["title"].replace(" ", "").lower()
-                        ]
+                        kws = get_nested(meta, "extra", "keywords")
+                        if not kws:
+                            kws = get_kw_from_plist(path, d)
                         docset = {"title": meta["title"], "keywords": kws}
                         if os.path.exists(icon_file):
                             docset["icon"] = icon_file
@@ -34,6 +35,13 @@ def list_installed_docsets(path):
                         print(e)
     return docsets
 
+def get_kw_from_plist(path, d):
+    plist_file = os.path.join(path, d, "Contents", "Info.plist")
+    print("getting info from " + plist_file)
+    if os.path.exists(plist_file):
+        with open(plist_file, 'rb') as f:
+            plist = plistlib.load(f)
+            return [plist["CFBundleIdentifier"]]
 
 def query_docset(kw, query):
     subprocess.run(["zeal", "{}:{}".format(kw, query)])
