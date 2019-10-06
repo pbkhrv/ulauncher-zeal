@@ -1,0 +1,25 @@
+{
+  "required_api_version": "^2.0.0",
+  "name": "Zeal",
+  "description": "Query Zeal documentation browser",
+  "developer_name": "Peter Bakhirev",
+  "icon": "images/zeal.png",
+  "options": {
+    "query_debounce": 0.1
+  },
+  "preferences": [
+    {
+      "id": "query",
+      "type": "keyword",
+      "name": "Query a Zeal docset",
+      "default_value": "zl"
+    },
+    {
+      "id": "zeal-docsets-path",
+      "type": "input",
+      "name": "Zeal docsets path",
+      "description": "Copy this from Zeal -> Preferences -> General -> Docset storage",
+      "default_value": "~/.local/share/Zeal/Zeal/docsets"
+    }
+  ]
+}
