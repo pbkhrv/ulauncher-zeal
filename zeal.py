@@ -2,6 +2,10 @@ import os
 import json
 import subprocess
 from operator import itemgetter
+import logging
+import wmctrl
+
+logger = logging.getLogger(__name__)
 
 
 def get_nested(data, *args):
@@ -36,7 +40,16 @@ def list_installed_docsets(path):
 
 
 def query_docset(kw, query):
-    subprocess.run(["zeal", "{}:{}".format(kw, query)])
+    try:
+        subprocess.run(["zeal", "{}:{}".format(kw, query)])
+    except FileNotFoundError:
+        logger.error("can't execute 'zeal' - is Zeal installed?")
+        return
+
+    try:
+        wmctrl.activate_window_by_class_name("zeal.Zeal")
+    except wmctrl.WmctrlNotFoundError:
+        logger.warn("wmctrl not installed, unable to activate Zeal app window")
 
 
 def fuzzy_filter_keywords(docset_keywords, query_keyword):
