@@ -44,6 +44,17 @@ Press Enter to open Zeal with that keyword and query:
 
 ![Zeal window](images/screenshots/zeal-window.png)
 
+## Troubleshooting
+
+### Why doesn't the Zeal application window come to the foreground after the query is sent to it?
+
+Please install [wmctrl](http://tripie.sweb.cz/utils/wmctrl/) - it's a utility that ulauncher-zeal calls to "activate" the Zeal window and bring it to the foreground after sending the docset query to it:
+
+**Ubuntu and Debian**
+```shell
+sudo apt-get install wmctrl
+```
+
 ## Inspiration and thanks
 
 I loved Alfred on MacOS, and now I love Ulauncher on Linux. The Python API is a joy to work with.
