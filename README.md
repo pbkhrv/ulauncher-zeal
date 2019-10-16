@@ -10,6 +10,14 @@ A [Ulauncher](https://ulauncher.io/) extension to query the [Zeal](https://zeald
 
 *Note: the extension cannot show actual search results because as of this writing, Zeal doesn't have an actual search API. The only way to interact with Zeal is to pass the docset name and the query on the command line.*
 
+## Why?
+
+Why use this instead of the Zeal's global shortcut?
+- If you already use Ulauncher for other things, there's no need to define and learn a separate keyboard shortcut for Zeal
+- The fuzzy docset keyword matching in Ulauncher *could* sometimes maybe require less keystrokes than "call up Zeal, start typing docset name, press Tab, start typing query"
+
+I know, it's not much. I guess I just like Ulauncher :-)
+
 ## Requirements
 
 - Install [Zeal](https://zealdocs.org/)
