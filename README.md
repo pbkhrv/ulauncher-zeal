@@ -8,7 +8,7 @@ A [Ulauncher](https://ulauncher.io/) extension to query the [Zeal](https://zeald
 - Fuzzy filtering of docsets
 - Open the Zeal app with the specified docset and search query
 
-*Note: the extension cannot show actual search results because as of this writing, Zeal doesn't have an actual search API. The only way to interact with Zeal is to pass the docset name and the query on the command line.*
+*Note: the extension cannot show actual search results because as of this writing, Zeal doesn't have an actual search API. The only way to interact with Zeal is to pass the docset name and the query to it via the command line. Issue #1 is all about this.*
 
 ## Why?
 
