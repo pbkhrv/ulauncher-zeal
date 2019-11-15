@@ -1,0 +1,8 @@
+{
+    "extra": {
+        "indexFilePath": "www.lua.org/manual/5.3/index.html"
+    },
+    "name": "Lua_5.3",
+    "revision": "4",
+    "title": "Lua 5.3"
+}
