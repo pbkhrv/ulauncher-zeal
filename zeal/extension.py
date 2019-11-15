@@ -13,9 +13,9 @@ from ulauncher.api.shared.event import (
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.item.ExtensionSmallResultItem import ExtensionSmallResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
-from ulauncher.api.shared.action.ExtensionCustomAction import ExtensionCustomAction
 from ulauncher.api.shared.action.SetUserQueryAction import SetUserQueryAction
 from ulauncher.api.shared.action.DoNothingAction import DoNothingAction
+from zeal.callable_action import callable_action, CallableEventListener
 from . import zeal
 
 
@@ -32,7 +32,7 @@ class ZealExtension(Extension):
         self.active_kws = None
         self.cache_expires_at = None
         self.subscribe(KeywordQueryEvent, KeywordQueryEventListener())
-        self.subscribe(ItemEnterEvent, ItemEnterEventListener())
+        self.subscribe(ItemEnterEvent, CallableEventListener())
         self.subscribe(PreferencesUpdateEvent, PreferencesUpdateEventListener())
 
     def get_docsets_path(self):
@@ -77,7 +77,7 @@ class ZealExtension(Extension):
 
         for dcs in docsets:
             if arg:
-                action = ExtensionCustomAction((dcs["keywords"][0], arg))
+                action = callable_action(zeal.query_docset, dcs["keywords"][0], arg)
             else:
                 action = SetUserQueryAction("{} {} ".format(ukw, dcs["keywords"][0]))
 
@@ -134,14 +134,6 @@ class KeywordQueryEventListener(EventListener):
             arg = kw_arg[1] if len(kw_arg) > 1 else ""
             return extension.process_docset_kw_arg_query(ukw, zkw, arg)
         return extension.process_docset_kw_arg_query(ukw, "", "")
-
-
-class ItemEnterEventListener(EventListener):
-    """ Handle custom actions """
-
-    def on_event(self, event, extension):
-        (zkw, arg) = event.get_data()
-        zeal.query_docset(zkw, arg)
 
 
 class PreferencesUpdateEventListener(EventListener):
