@@ -68,3 +68,7 @@ sudo apt-get install wmctrl
 I loved Alfred on MacOS, and now I love Ulauncher on Linux. The Python API is a joy to work with.
 
 Thanks to [Dash for MacOS](https://kapeli.com/dash) and the [Zeal project](https://github.com/zealdocs/zeal/) for making awesome offline documentation easily available.
+
+## License
+
+MIT license. See [LICENSE](LICENSE) file for details.
