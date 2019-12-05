@@ -7,6 +7,7 @@ init:
 
 test:
 	pylint main.py ${EXT_PKG}/
+	mypy main.py
 	eval "PYTHONPATH=`pwd` py.test -v --doctest-modules --flake8 tests/ ${EXT_PKG}/"
 
 run_ul:
