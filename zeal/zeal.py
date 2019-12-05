@@ -9,6 +9,7 @@ import plistlib
 import subprocess
 from operator import itemgetter
 import logging
+from typing import Dict, List
 from . import wmctrl
 
 LOGGER = logging.getLogger(__name__)
@@ -26,7 +27,7 @@ def get_nested(data, *args):
     return None
 
 
-def list_installed_docsets(path):
+def list_installed_docsets(path: str) -> List[Dict[str, str]]:
     """
     Find all installed Zeal docsets
     """
@@ -55,19 +56,20 @@ def list_installed_docsets(path):
     return docsets
 
 
-def get_docset_kw_from_plist(docset_path):
+def get_docset_kw_from_plist(docset_path: str) -> List[str]:
     """
     Get Zeal keyword from a Zeal docset plist file
     """
     plist_file = os.path.join(docset_path, "Contents", "Info.plist")
     if os.path.exists(plist_file):
         with open(plist_file, "rb") as f:
-            plist = plistlib.load(f)
-            return [plist["CFBundleIdentifier"]]
+            plist = plistlib.load(f)  # type: Dict[str, str]
+            if "CFBundleIdentifier" in plist:
+                return [plist["CFBundleIdentifier"]]
     return []
 
 
-def query_docset(keyword, query):
+def query_docset(keyword: str, query: str) -> None:
     """
     Pass search query to Zeal
     """
@@ -83,7 +85,7 @@ def query_docset(keyword, query):
         LOGGER.warning("wmctrl not installed, unable to activate Zeal app window")
 
 
-def fuzzy_filter_keywords(docset_keywords, query_keyword):
+def fuzzy_filter_keywords(docset_keywords: List[str], query_keyword: str) -> List[str]:
     """
     Match strings fuzzily
     """

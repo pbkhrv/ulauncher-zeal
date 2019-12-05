@@ -3,6 +3,7 @@ Extension to query Zeal docsets
 """
 from datetime import datetime, timedelta
 from operator import itemgetter
+from typing import Type, Dict, List, Set
 from ulauncher.api.client.Extension import Extension
 from ulauncher.api.client.EventListener import EventListener
 from ulauncher.api.shared.event import (
@@ -12,6 +13,7 @@ from ulauncher.api.shared.event import (
 )
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.item.ExtensionSmallResultItem import ExtensionSmallResultItem
+from ulauncher.api.shared.action.BaseAction import BaseAction
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.SetUserQueryAction import SetUserQueryAction
 from ulauncher.api.shared.action.DoNothingAction import DoNothingAction
@@ -35,13 +37,15 @@ class ZealExtension(Extension):
         self.subscribe(ItemEnterEvent, CallableEventListener())
         self.subscribe(PreferencesUpdateEvent, PreferencesUpdateEventListener())
 
-    def get_docsets_path(self):
+    def get_docsets_path(self) -> str:
         """
         Configurable path where Zeal docsets are installed
         """
         return self.preferences["zeal-docsets-path"]
 
-    def process_docset_kw_arg_query(self, ukw, zkw, arg):
+    def process_docset_kw_arg_query(
+        self, ukw: str, zkw: str, arg: str
+    ) -> Type[BaseAction]:
         """
         Process Ulauncher search query
         """
@@ -92,13 +96,13 @@ class ZealExtension(Extension):
             items.append(item)
         return RenderResultListAction(items + tail)
 
-    def list_matching_docsets(self, zkw):
+    def list_matching_docsets(self, zkw: str) -> List[Dict[str, str]]:
         """
         Find all docsets with keywords that match `zkw`
         """
         kws = zeal.fuzzy_filter_keywords(self.active_kws, zkw)
         dcs = []
-        already_inserted = set()
+        already_inserted: Set[str] = set()
         for k in kws:
             title = self.kw_docset_map[k]
             if title not in already_inserted:
@@ -106,7 +110,7 @@ class ZealExtension(Extension):
                 dcs.append(self.cached_docsets[title])
         return dcs
 
-    def reload_docsets(self):
+    def reload_docsets(self) -> None:
         """
         Reload information about all installed Zeal docsets
         """
@@ -124,7 +128,7 @@ class ZealExtension(Extension):
 class KeywordQueryEventListener(EventListener):
     """ KeywordQueryEventListener class manages user input """
 
-    def on_event(self, event, extension):
+    def on_event(self, event, extension) -> Type[BaseAction]:
         # assuming only one ulauncher keyword: open Zeal with a query
         arg = event.get_argument()
         ukw = event.get_keyword()
