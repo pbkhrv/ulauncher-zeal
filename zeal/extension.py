@@ -3,7 +3,7 @@ Extension to query Zeal docsets
 """
 from datetime import datetime, timedelta
 from operator import itemgetter
-from typing import Type, Dict, List, Set
+from typing import Dict, List, Set
 from ulauncher.api.client.Extension import Extension
 from ulauncher.api.client.EventListener import EventListener
 from ulauncher.api.shared.event import (
@@ -43,9 +43,7 @@ class ZealExtension(Extension):
         """
         return self.preferences["zeal-docsets-path"]
 
-    def process_docset_kw_arg_query(
-        self, ukw: str, zkw: str, arg: str
-    ) -> Type[BaseAction]:
+    def process_docset_kw_arg_query(self, ukw: str, zkw: str, arg: str) -> BaseAction:
         """
         Process Ulauncher search query
         """
@@ -128,7 +126,7 @@ class ZealExtension(Extension):
 class KeywordQueryEventListener(EventListener):
     """ KeywordQueryEventListener class manages user input """
 
-    def on_event(self, event, extension) -> Type[BaseAction]:
+    def on_event(self, event, extension) -> BaseAction:
         # assuming only one ulauncher keyword: open Zeal with a query
         arg = event.get_argument()
         ukw = event.get_keyword()
